@@ -4,22 +4,6 @@ import "leaflet.heat"
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { useEffect, useState } from 'react'
 import { getCrimeData, MarkerData } from "./api";
-import './utils'
-// import { checkInBox, viewportBoundaries } from "./utils";
-
-// function Map() {
-//   const position = new L.LatLng(51.505, -0.09);
-//   useEffect(() => {
-//     let map = L.map("map").setView(position, 12);
-
-//     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-//       attribution:
-//         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-//     }).addTo(map);
-//   }, [])
-
-//   return <div id="map" style={{ minHeight: "100vh", minWidth: "100vw" }}></div>;
-// }
 
 function HeatmapLayer({ crimeLocations }: { crimeLocations: MarkerData[] }) {
   const map = useMap()
@@ -43,6 +27,7 @@ function HeatmapLayer({ crimeLocations }: { crimeLocations: MarkerData[] }) {
 
 function MarkersLayer({ crimeLocations }: { crimeLocations: MarkerData[] }) {
   const map = useMap();
+
   let markers = crimeLocations.map((item: MarkerData, index) => {
     let position = new L.LatLng(item.latitude, item.longitude)
     if (map.getBounds().contains(position)) {
@@ -71,19 +56,20 @@ function MarkersLayer({ crimeLocations }: { crimeLocations: MarkerData[] }) {
   }
 }
 
+
 function App() {
   const position = new L.LatLng(51.505, -0.09);
-  // const marker_position = new LatLng(51.505, -0.09);
+
 
   const [crimeLocations, setCrimeLocations] = useState<MarkerData[]>([]);
 
-  // useEffect(() => {
-  //   getCrimeData().then(data => {
-  //     setCrimeLocations(data);
-  //   }, err => {
-  //     console.log(err.message);
-  //   })
-  // }, []);
+  useEffect(() => {
+    getCrimeData().then(data => {
+      setCrimeLocations(data);
+    }, err => {
+      console.log(err.message);
+    })
+  }, [HeatmapLayer]);
 
   console.log("Hello World");
 
