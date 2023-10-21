@@ -9,7 +9,7 @@ class Command(BaseCommand):
     help = 'Import data from static CSV file into the database'
 
     def handle(self, *args, **kwargs):
-        csv_file_path = os.path.join(settings.BASE_DIR, 'crime', 'static', 'h_m_data.csv')
+        csv_file_path = os.path.join(settings.BASE_DIR, 'crime', 'static', 'london_data.csv')
         # If you want to ensure the file exists before proceeding
         if not os.path.exists(csv_file_path):
             print(f"File not found: {csv_file_path}")
