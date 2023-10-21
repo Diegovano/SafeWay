@@ -1,7 +1,7 @@
 // import './App.css'
 import * as L from "leaflet"
 import "leaflet.heat"
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvent } from "react-leaflet";
 import { useEffect, useState } from 'react'
 import { getCrimeData, MarkerData } from "./api";
 
@@ -27,32 +27,34 @@ function HeatmapLayer({ crimeLocations }: { crimeLocations: MarkerData[] }) {
 
 function MarkersLayer({ crimeLocations }: { crimeLocations: MarkerData[] }) {
   const map = useMap();
+  const [filteredMarkers, setFilteredMarkers] = useState<JSX.Element[]>([]);
 
-  let markers = crimeLocations.map((item: MarkerData, index) => {
-    let position = new L.LatLng(item.latitude, item.longitude)
-    if (map.getBounds().contains(position)) {
-      return (
-        <Marker key={index} position={new L.LatLng(item.latitude, item.longitude)} opacity={0} >
-          <Popup>
-            Count: {item.count} <br></br>
-            LAT: {Math.abs(item.latitude)}{item.latitude >= 0 ? 'N' : 'S'} <br></br> LON: {Math.abs(item.longitude)}{item.longitude >= 0 ? 'E' : 'W'}
-          </Popup>
-        </Marker>)
-    } else {
-      return (<></>);
-    }
-  })
+  useMapEvent('moveend', () => {
+    const bounds = map.getBounds();
+    const updatedMarkers = crimeLocations.map((item: MarkerData, index) => {
+      const position = new L.LatLng(item.latitude, item.longitude);
+      if (bounds.contains(position)) {
+        return (
+          <Marker key={index} position={position} opacity={0}>
+            <Popup>
+              Count: {item.count} <br></br>
+              LAT: {Math.abs(item.latitude)}{item.latitude >= 0 ? 'N' : 'S'} <br></br> LON: {Math.abs(item.longitude)}{item.longitude >= 0 ? 'E' : 'W'}
+            </Popup>
+          </Marker>
+        );
+      } else {
+        return null;
+      }
+    }).filter(Boolean);
+    setFilteredMarkers(updatedMarkers);
+  });
 
-  if (markers.length > 2000) {
+  if (filteredMarkers.length > 2000) {
     return (
-      <h1>Too many markers in view! There are {markers.length} in the viewport, please reduce to less than 2000.</h1>
-    )
-  } else {
-    return (
-      <div>
-        {markers}
-      </div>
+      <h1>Too many markers in view! There are {filteredMarkers.length} in the viewport, please reduce to less than 2000.</h1>
     );
+  } else {
+    return <div>{filteredMarkers}</div>;
   }
 }
 
