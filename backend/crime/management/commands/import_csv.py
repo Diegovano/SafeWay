@@ -20,4 +20,7 @@ class Command(BaseCommand):
             next(reader)  # This skips the header row of the CSV file
 
             for row in reader:
-                CrimeLocation.objects.create(longitude=row[0], latitude=row[1])
+                obj, created = CrimeLocation.objects.get_or_create(longitude=row[0], latitude=row[1], defaults={'count': 1})
+                if created:
+                    obj.count += 1
+                    obj.save()

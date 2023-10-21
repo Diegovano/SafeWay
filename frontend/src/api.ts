@@ -5,6 +5,7 @@ export interface MarkerData {
   // location: LatLng
   latitude: number,
   longitude: number,
+  count: number
 }
 
 export async function getTest(): Promise<any> {

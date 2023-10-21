@@ -35,6 +35,7 @@ function App() {
           {crimeLocations.map((item: MarkerData, _index) =>
             <Marker position={new LatLng(item.latitude, item.longitude)}>
               <Popup>
+                Count: {item.count} <br></br>
                 LAT: {Math.abs(item.latitude)}{item.latitude >= 0 ? 'N' : 'S'} <br></br> LON: {Math.abs(item.longitude)}{item.longitude >= 0 ? 'E' : 'W'}
               </Popup>
             </Marker>
