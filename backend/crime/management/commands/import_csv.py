@@ -21,6 +21,6 @@ class Command(BaseCommand):
 
             for row in reader:
                 obj, created = CrimeLocation.objects.get_or_create(longitude=row[0], latitude=row[1], defaults={'count': 1})
-                if created:
+                if not created:
                     obj.count += 1
                     obj.save()
