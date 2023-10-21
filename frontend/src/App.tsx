@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // import './App.css'
 import { LatLng } from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
@@ -37,6 +38,46 @@ function App() {
     //   </div>
     // </>
   )
+=======
+import { useState, useEffect } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import { getTest } from "./api";
+import "./App.css";
+
+function App() {
+  const [count, setCount] = useState(0);
+  const [test, setTest] = useState("");
+
+  useEffect(() => {
+    const effectFunction = async () => {
+      const response = await getTest();
+      console.log(response);
+    };
+
+    effectFunction();
+  }, []);
+
+  return (
+    <>
+      <div>
+        <a href="https://vitejs.dev" target="_blank">
+          <img src={viteLogo} className="logo" alt="Vite logo" />
+        </a>
+        <a href="https://react.dev" target="_blank">
+          <img src={reactLogo} className="logo react" alt="React logo" />
+        </a>
+      </div>
+      <h1>Vite + React</h1>
+      <div className="card">
+        <button onClick={() => setCount((count) => count + 1)}>
+          count is {count}
+        </button>
+      </div>
+      <p>{test}</p>
+    </>
+  );
+>>>>>>> 4ed36f7 (Connecting frontend to backend.)
 }
 
-export default App
+export default App;
