@@ -41,7 +41,7 @@ function HeatmapLayer({ crimeLocations }: { crimeLocations: MarkerData[] }) {
   return null;
 }
 
-function MarkersLayer({ crimeLocations }: { crimeLocations: MarkerData[] }, bounds: viewportBoundaries) {
+function MarkersLayer({ crimeLocations }: { crimeLocations: MarkerData[] }) {
   const map = useMap();
   let markers = crimeLocations.map((item: MarkerData, index) => {
     let position = new L.LatLng(item.latitude, item.longitude)
@@ -59,11 +59,15 @@ function MarkersLayer({ crimeLocations }: { crimeLocations: MarkerData[] }, boun
   })
 
   if (markers.length > 2000) {
-    return [(
+    return (
       <h1>Too many markers in view! There are {markers.length} in the viewport, please reduce to less than 2000.</h1>
-    )]
+    )
   } else {
-    return markers;
+    return (
+      <div>
+        {markers}
+      </div>
+    );
   }
 }
 
