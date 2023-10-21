@@ -2,25 +2,17 @@
 import { LatLng } from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { useEffect, useState } from 'react'
-import { getCrimeData } from "./api";
-
-interface MarkerData {
-  id: number,
-  // location: LatLng
-  latitude: number,
-  longitude: number,
-}
+import { getCrimeData, MarkerData } from "./api";
 
 function App() {
   const position = new LatLng(51.505, -0.09);
-  const marker_position = new LatLng(51.505, -0.09);
+  // const marker_position = new LatLng(51.505, -0.09);
 
-  const sample: MarkerData = { id: 0, latitude: 0, longitude: 0 };
-  const [crimeLocations, _setCrimeLocations] = useState([sample]);
+  const [crimeLocations, setCrimeLocations] = useState<MarkerData[]>([]);
 
   useEffect(() => {
-    getCrimeData().then(json => {
-      // setCrimeLocations(json);
+    getCrimeData().then(data => {
+      setCrimeLocations(data);
     }, err => {
       console.log(err.message);
     })
@@ -40,15 +32,13 @@ function App() {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
 
-          {
-            crimeLocations.map((item: MarkerData, _index) => {
-              <Marker position={new LatLng(item.latitude, item.longitude)}>
-                <Popup>
-                  {item.id}
-                </Popup>
-              </Marker>
-            })
-          }
+          {crimeLocations.map((item: MarkerData, _index) =>
+            <Marker position={new LatLng(item.latitude, item.longitude)}>
+              <Popup>
+                LAT: {Math.abs(item.latitude)}{item.latitude >= 0 ? 'N' : 'S'} <br></br> LON: {Math.abs(item.longitude)}{item.longitude >= 0 ? 'E' : 'W'}
+              </Popup>
+            </Marker>
+          )}
           <Marker position={new LatLng(55, 0)}>
             <Popup>
               item.id

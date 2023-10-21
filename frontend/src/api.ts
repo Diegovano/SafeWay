@@ -1,5 +1,12 @@
 const BASE_URL = "http://localhost:8000/crime";
 
+export interface MarkerData {
+  id: number,
+  // location: LatLng
+  latitude: number,
+  longitude: number,
+}
+
 export async function getTest(): Promise<any> {
   const url = `${BASE_URL}/test/`;
 
@@ -20,7 +27,7 @@ export async function getTest(): Promise<any> {
   return response.json();
 }
 
-export async function getCrimeData(): Promise<string> {
+export async function getCrimeData(): Promise<MarkerData[]> {
   const url = `${BASE_URL}/get-crime-data/`
 
   const options = {
