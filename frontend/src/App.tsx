@@ -77,13 +77,15 @@ function App() {
 
   const [crimeLocations, setCrimeLocations] = useState<MarkerData[]>([]);
 
-  useEffect(() => {
-    getCrimeData().then(data => {
-      setCrimeLocations(data);
-    }, err => {
-      console.log(err.message);
-    })
-  }, []);
+  // useEffect(() => {
+  //   getCrimeData().then(data => {
+  //     setCrimeLocations(data);
+  //   }, err => {
+  //     console.log(err.message);
+  //   })
+  // }, []);
+
+  console.log("Hello World");
 
   return (
     <>
@@ -112,7 +114,7 @@ function App() {
         </MapContainer>
       </div>
     </>
-  )
+  );
 }
 
 export default App;

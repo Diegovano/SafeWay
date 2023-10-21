@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/frontend
+      - node_modules:/frontend/node_modules
+
+  backend:
+    build: ./backend
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    volumes:
+      - ./backend:/backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=True
+
+volumes:
+  node_modules:
