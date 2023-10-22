@@ -45,7 +45,7 @@ function MarkersLayer({ crimeLocations }: { crimeLocations: MarkerData[] }) {
       } else {
         return null;
       }
-    }).filter(Boolean);
+    }).filter((element): element is JSX.Element => element !== null);
     setFilteredMarkers(updatedMarkers);
   });
 
