@@ -25,7 +25,7 @@ function HeatmapLayer({ crimeLocations }: { crimeLocations: MarkerData[] }) {
   return null;
 }
 
-function MarkersLayer({ crimeLocations }: { crimeLocations: MarkerData[] }) {
+function MarkersLayer({ crimeLocations, setVisibleMarkers }: { crimeLocations: MarkerData[], setVisibleMarkers: React.Dispatch<React.SetStateAction<number>> }) {
   const map = useMap();
   const [filteredMarkers, setFilteredMarkers] = useState<JSX.Element[]>([]);
 
@@ -49,9 +49,10 @@ function MarkersLayer({ crimeLocations }: { crimeLocations: MarkerData[] }) {
     setFilteredMarkers(updatedMarkers);
   });
 
+  setVisibleMarkers(filteredMarkers.length);
   if (filteredMarkers.length > 2000) {
     return (
-      <h1>Too many markers in view! There are {filteredMarkers.length} in the viewport, please reduce to less than 2000.</h1>
+      <></>
     );
   } else {
     return <div>{filteredMarkers}</div>;
@@ -62,8 +63,9 @@ function MarkersLayer({ crimeLocations }: { crimeLocations: MarkerData[] }) {
 function App() {
   const position = new L.LatLng(51.505, -0.09);
 
-
   const [crimeLocations, setCrimeLocations] = useState<MarkerData[]>([]);
+  const [visibleMarkers, setVisibleMarkers] = useState(0);
+
 
   useEffect(() => {
     getCrimeData().then(data => {
@@ -76,21 +78,34 @@ function App() {
   return (
     <>
       <div>
-        <h1>
-          Map
-        </h1>
+        <span>
+          <h1>
+            SafeWay
+          </h1>
+          {
+            visibleMarkers >= 2000 ?
+              <p>
+                Too many markers in view! There are {visibleMarkers} in the viewport, please reduce to less than 2000.
+              </p> :
+              <p>
+                Displaying {visibleMarkers} markers in the viewport.
+              </p>
+          }
+
+
+        </span>
         <MapContainer
           center={position}
           zoom={13}
           scrollWheelZoom={true}
-          style={{ minHeight: "100vh", minWidth: "100vw" }}
+          style={{ minHeight: "80vh", minWidth: "100vw" }}
         >
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
 
-          <MarkersLayer crimeLocations={crimeLocations} />
+          <MarkersLayer crimeLocations={crimeLocations} setVisibleMarkers={setVisibleMarkers} />
           <Marker position={new L.LatLng(55, 0)}>
             <Popup>
               item.id
