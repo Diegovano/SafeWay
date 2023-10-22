@@ -31,16 +31,16 @@ function MarkersLayer({ crimeLocations }: { crimeLocations: MarkerData[] }) {
 
   useMapEvent('moveend', () => {
     const bounds = map.getBounds();
-    const updatedMarkers = crimeLocations.map((item: MarkerData, index) => {
+    const updatedMarkers = crimeLocations.map((item: MarkerData, _index) => {
       const position = new L.LatLng(item.latitude, item.longitude);
       if (bounds.contains(position)) {
         return (
-          <Marker key={index} position={position} opacity={0}>
-            <Popup>
-              Count: {item.count} <br></br>
-              LAT: {Math.abs(item.latitude)}{item.latitude >= 0 ? 'N' : 'S'} <br></br> LON: {Math.abs(item.longitude)}{item.longitude >= 0 ? 'E' : 'W'}
-            </Popup>
-          </Marker>
+          // <Marker key={index} opacity={0}>
+          <Popup position={position}>
+            Count: {item.count} <br></br>
+            LAT: {Math.abs(item.latitude)}{item.latitude >= 0 ? 'N' : 'S'} <br></br> LON: {Math.abs(item.longitude)}{item.longitude >= 0 ? 'E' : 'W'}
+          </Popup>
+          // </Marker >
         );
       } else {
         return null;
